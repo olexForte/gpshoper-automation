@@ -1,0 +1,50 @@
+description = 'Forte ATs UI'
+
+ext {
+    gebVersion = '1.1.1'
+    seleniumVersion = '3.5.3'
+}
+
+dependencies {
+    compile project(':at-common')
+    testCompile project(':at-common').sourceSets.test.output
+    compile fileTree(dir: 'lib', include: '*.jar')
+    compile group: 'org.gebish', name: 'geb-core', version: gebVersion
+    compile group: 'org.gebish', name: 'geb-spock', version: gebVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: seleniumVersion
+}
+
+task copyDrivers(type: Copy) {
+    def fromDir = file("${rootDir}/at-ui/src/main/resources")
+    def toDir = file("${projectDir}/src/test/resources")
+    from(fromDir)
+    into(toDir)
+    include '**/*driver*'
+    include '**/*Driver*'
+    outputs.upToDateWhen { false }
+}
+
+project.drivers.each { driver ->
+    task "${driver}_Test"(type: Test) {
+        dependsOn copyDrivers
+        systemProperty "browser", driver
+        systemProperty "geb.env", System.properties['geb.env']
+        systemProperty "testCategory", System.properties['testCategory']
+        systemProperty "geb.build.reportsDir", 'reports'
+        ignoreFailures = true
+        maxParallelForks = System.properties['thread.count'] ? System.properties['thread.count'].toInteger() : 1
+        forkEvery = 4
+        outputs.upToDateWhen { false }
+        reports {
+            junitXml.destination = file("$buildDir/test-results/$name")
+        }
+    }
+}
+
+test {
+    dependsOn drivers.collect { driver -> tasks["${driver}_Test"] }
+    enabled = false
+}

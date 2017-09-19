@@ -1,3 +1,5 @@
+package com.fortegrp.at.ui.content
+
 import com.fortegrp.at.ui.content.BasePage
 import org.openqa.selenium.By
 

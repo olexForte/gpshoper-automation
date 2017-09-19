@@ -17,7 +17,7 @@ class BaseUISpec extends GebReportingSpec implements BaseSpec {
 
     def startApplication() {
         logInfo("Browser window opening...")
-        browser.go(baseUrl)
+        driver.get(baseUrl)
     }
 
     void cleanReportGroupDir() {

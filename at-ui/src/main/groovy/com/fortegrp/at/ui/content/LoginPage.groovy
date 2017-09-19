@@ -1,12 +1,15 @@
 package com.fortegrp.at.ui.content
+
 /**
  * Created by Admin on 9/18/2017.
  */
 class LoginPage extends BaseControlCenterPage{
+
     static at = {
         emailInput.displayed
         passwordInput.displayed
         js.('document.readyState') == 'complete'}
+
     static content = {
         emailInput(wait: true) { $("input[name='email']") }
         passwordInput(wait: true) { $("input[name='password']") }

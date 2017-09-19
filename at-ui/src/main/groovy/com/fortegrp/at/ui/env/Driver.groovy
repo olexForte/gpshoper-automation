@@ -24,8 +24,10 @@ class Driver {
         if (driverInstance == null) {
             switch (Environment.browserType) {
                 case "chrome":
-                    def chromeDriver = new File('src/test/resources/chromedriver' + (SystemUtils.IS_OS_WINDOWS ? ".exe" : ""))
-                    System.setProperty('webdriver.chrome.driver', chromeDriver.absolutePath)
+                    String extension = "";
+                    if (System.properties['os.name'].toLowerCase().contains('windows')) extension = ".exe"
+                    if (System.properties['os.name'].toLowerCase().contains('mac'))     extension = "_mac"
+                    System.setProperty("webdriver.chrome.driver", Environment.getCWD()+"/src/test/resources/chromedriver" + extension)
                     ChromeOptions options = new ChromeOptions()
                     options.addArguments("--start-maximized")
                     options.addArguments("--test-type")

@@ -2,7 +2,10 @@ package spec
 
 import com.fortegrp.at.common.annotation.TestDoc
 import com.fortegrp.at.ui.BaseUISpec
+import com.fortegrp.at.ui.content.BaseControlCenterPage
 import com.fortegrp.at.ui.content.LoginPage
+import geb.Browser
+import org.openqa.selenium.By
 
 
 /**
@@ -17,23 +20,10 @@ class LoginSpec extends BaseUISpec{
         at LoginPage
 
         and: "Tries to log into as #testuser.username"
-        loginAs("","")
+        loginAs(System.getProperty('username'), System.getProperty('password'))
 
-//        then: "Verify that Home Page has opened for the appropriate user"
-//        at DashboardsPage
-//        header.currentUserName.text().trim() == testuser.firstName + " " + testuser.lastName
-//
-//        when: "User click Log Out menu item"
-//        header.logout()
-//
-//        then: "User has been redirected to Login page"
-//        at LoginPage
-//
-//        where:
-//        testuser = TestData.defaultUser
-        then: "faaa"
-        1 == 1
-
+        then: "Verify that user is on Dashboard page"
+        waitFor {$(By.xpath("//h1[contains(text(), 'DASHBOARD')]")).displayed}
     }
 
 }

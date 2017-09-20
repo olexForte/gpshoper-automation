@@ -13,7 +13,7 @@ class LoginPage extends BaseControlCenterPage{
     static content = {
         emailInput(wait: true) { $("input[name='email']") }
         passwordInput(wait: true) { $("input[name='password']") }
-        loginButton(wait: true) { $("button.btn-lg") }
+        loginButton(wait: true) { $("button", text:'Login') }
     }
 
     def loginAs(String email, String password) {

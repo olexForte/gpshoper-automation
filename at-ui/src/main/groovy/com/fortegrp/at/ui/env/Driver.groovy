@@ -27,7 +27,7 @@ class Driver {
                     String extension = "";
                     if (System.properties['os.name'].toLowerCase().contains('windows')) extension = ".exe"
                     if (System.properties['os.name'].toLowerCase().contains('mac'))     extension = "_mac"
-                    System.setProperty("webdriver.chrome.driver", Environment.getCWD()+"/src/test/resources/chromedriver" + extension)
+                    System.setProperty("webdriver.chrome.driver", Environment.getCWD()+"/src/main/resources/chromedriver" + extension)
                     ChromeOptions options = new ChromeOptions()
                     options.addArguments("--start-maximized")
                     options.addArguments("--test-type")

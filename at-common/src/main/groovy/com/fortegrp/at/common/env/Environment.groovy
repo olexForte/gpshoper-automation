@@ -28,7 +28,7 @@ class Environment {
     //force config loading for the case when browser doesn't exit yet (needed to get baseURL for DB update)
     static getConfig() {
         if (conf == null) {
-            conf = new ConfigSlurper().parse(new File('src/test/resources/GebConfig.groovy').toURL())
+            conf = new ConfigSlurper().parse(new File('src/main/resources/GebConfig.groovy').toURL())
         }
         conf
     }
@@ -43,5 +43,9 @@ class Environment {
 
     static reportGlobalSuffix() {
         "_${browserType}"
+    }
+
+    static getCWD(){
+        System.getProperty("user.dir")
     }
 }

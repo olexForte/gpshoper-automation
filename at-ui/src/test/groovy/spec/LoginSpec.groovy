@@ -1,3 +1,5 @@
+package spec
+
 import com.fortegrp.at.common.annotation.TestDoc
 import com.fortegrp.at.ui.BaseUISpec
 import com.fortegrp.at.ui.content.LoginPage
@@ -12,7 +14,6 @@ class LoginSpec extends BaseUISpec{
     def "Login Valid Credentials"() {
 
         when: "User at Login Page"
-        startApplication()
         at LoginPage
 
         and: "Tries to log into as #testuser.username"

@@ -25,9 +25,7 @@ atCheckWaiting = true
 
 // get/set baseUrl from environments closure. Here testEnv is externally-passed parameter (for environment type)
 baseUrl = this."envs"."${System.properties['testEnv']}".baseUrl
-//restUrl = this."envs"."${System.properties['testEnv']}".restUrl
 
-//Environment.baseUrl = baseUrl
 driver = { Driver.getInstance() }
 
 

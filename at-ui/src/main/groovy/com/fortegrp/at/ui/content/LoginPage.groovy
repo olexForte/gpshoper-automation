@@ -19,6 +19,12 @@ class LoginPage extends BaseControlCenterPage{
         loginButton(wait: true) { $("button", text:'Login') }
     }
 
+    /**
+     * Login as user<br>
+     * @param email
+     * @param password
+     * @return
+     */
     def loginAs(String email, String password) {
         emailInput.value(email)
         passwordInput.value(password)

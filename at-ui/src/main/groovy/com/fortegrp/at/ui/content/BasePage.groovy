@@ -28,11 +28,6 @@ class BasePage extends Page {
         return super.verifyAt()
     }
 
-    def getCurrentDateFormatted() {
-        def date = new Date()
-        date.format('MMMM d, yyyy')
-    }
-
     def back() {
         driver.navigate().back()
     }

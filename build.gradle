@@ -17,10 +17,6 @@ subprojects {
         mavenCentral()
     }
 
-    ext {
-        drivers = System.properties['browsers'] ? System.properties['browsers'].tokenize(';') : ["chrome"]
-    }
-
     delete 'reports'
     delete 'log'
 }

@@ -17,17 +17,17 @@ class BaseControlCenterPage extends BasePage{
 
     /**
      * Open Main menu item
-     * @param menuItem
+     * @param sectionName section name (e.g. 'MARKETING')
      */
-    def navigateToMainMenuItem(menuItem){
-        sideBarSection(menuItem).click()
+    def expandSideBarSection(sectionName){
+        sideBarSection(sectionName).click()
     }
 
     /**
      * Open Submenu Item on Main menu
-     * @param item
+     * @param item item name (e.g. 'Banner')
      */
-    def navigateToSubMenuItem(item){
+    def selectSideBarMenuItem(item){
         sideBarItem(item).click()
     }
 }

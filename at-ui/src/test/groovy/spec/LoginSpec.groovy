@@ -25,8 +25,8 @@ class LoginSpec extends BaseUISpec{
         at DashboardPage
 
         and: "Open menu section 'MARKETING' - 'Banner'"
-        page(DashboardPage).navigateToMainMenuItem("MARKETING")
-        page(DashboardPage).navigateToSubMenuItem("Banner")
+        expandSideBarSection("MARKETING")
+        selectSideBarMenuItem("Banner")
 
         then: "Verify that user is on Dashboard page"
         1 == 1

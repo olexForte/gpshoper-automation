@@ -25,5 +25,4 @@ class LoginSpec extends BaseUISpec{
         then: "Verify that user is on Dashboard page"
         waitFor {$(By.xpath("//h1[contains(text(), 'DASHBOARD')]")).displayed}
     }
-
 }

@@ -27,7 +27,7 @@ class Driver {
                     String extension = "";
                     if (System.properties['os.name'].toLowerCase().contains('windows')) extension = ".exe"
                     if (System.properties['os.name'].toLowerCase().contains('mac'))     extension = "_mac"
-                    System.setProperty("webdriver.chrome.driver", Environment.getCWD()+"/src/main/resources/chromedriver" + extension)
+                    System.setProperty("webdriver.chrome.driver", Environment.getCWD() + "/src/main/resources/chromedriver" + extension)
                     ChromeOptions options = new ChromeOptions()
                     options.addArguments("--start-maximized")
                     options.addArguments("--test-type")
@@ -45,16 +45,18 @@ class Driver {
                     driverInstance
                     break
                 case "ff":
-                    def geckoDriver = new File('src/test/resources/geckodriver' + (SystemUtils.IS_OS_WINDOWS ? ".exe" : ""))
-                    System.setProperty('webdriver.gecko.driver', geckoDriver.absolutePath)
+                    String extension = "";
+                    if (System.properties['os.name'].toLowerCase().contains('windows')) extension = ".exe"
+                    if (System.properties['os.name'].toLowerCase().contains('mac'))     extension = "_mac"
+                    System.setProperty('webdriver.gecko.driver', Environment.getCWD() + '/src/main/resources/geckodriver' + extension)
                     FirefoxProfile profile = new FirefoxProfile()
-                    profile.setPreference("app.update.service.enabled", false)
-                    profile.setPreference("app.update.auto", false)
-                    profile.setPreference("app.update.enabled", false)
-                    //automatically download pdf's
-                    profile.setPreference("browser.download.folderList", 1)
-                    profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
-                    profile.setPreference("pdfjs.disabled", true)
+//                    profile.setPreference("app.update.service.enabled", false)
+//                    profile.setPreference("app.update.auto", false)
+//                    profile.setPreference("app.update.enabled", false)
+//                    //automatically download pdf's
+//                    profile.setPreference("browser.download.folderList", 1)
+//                    profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+//                    profile.setPreference("pdfjs.disabled", true)
 
 //                    profile.setEnableNativeEvents(false)
                     driverInstance = new FirefoxDriver(profile)

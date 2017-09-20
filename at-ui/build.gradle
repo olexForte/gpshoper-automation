@@ -31,6 +31,9 @@ project.drivers.each { driver ->
     task "${driver}_Test"(type: Test) {
         dependsOn copyDrivers
         systemProperty "browser", driver
+        systemProperty "testEnv", System.properties['testEnv']
+        systemProperty "username", System.properties['username']
+        systemProperty "password", System.properties['password']
         systemProperty "geb.env", System.properties['geb.env']
         systemProperty "testCategory", System.properties['testCategory']
         systemProperty "geb.build.reportsDir", 'reports'

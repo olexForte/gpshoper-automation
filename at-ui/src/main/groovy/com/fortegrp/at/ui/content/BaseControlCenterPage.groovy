@@ -7,6 +7,12 @@ import org.openqa.selenium.By
  * Created by Admin on 9/18/2017.
  */
 class BaseControlCenterPage extends BasePage{
+    static at ={
+        waitFor {
+            navigationSideBar.displayed
+            js.('document.readyState') == 'complete'
+        }
+    }
     static content = {
         userDropDown{$(By.xpath("//div[contains(@class, 'header')]//a[@class='dropdown-toggle']"))}
         logoutOption{$(By.xpath("//div[contains(@class, 'header')]//a[text()='Logout']"))}

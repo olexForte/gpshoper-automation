@@ -2,6 +2,9 @@ package com.fortegrp.at.ui
 
 import com.fortegrp.at.common.BaseSpec
 import com.fortegrp.at.common.env.Environment
+import com.fortegrp.at.ui.content.BaseControlCenterPage
+import com.fortegrp.at.ui.content.DashboardPage
+import com.fortegrp.at.ui.content.LoginPage
 import geb.spock.GebReportingSpec
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.Keys
@@ -20,6 +23,13 @@ class BaseUISpec extends GebReportingSpec implements BaseSpec {
         browser.go(baseUrl)
     }
 
+    def openMainPage() {
+        at LoginPage
+        loginAs(System.getProperty('username'), System.getProperty('password'))
+        at DashboardPage
+    }
+
+    //todo: Why the methods below are in the BaseUISpec? Why do all the specs need to inherit this methods? It seems unnecessary.
     void cleanReportGroupDir() {
     }
 

@@ -18,11 +18,17 @@ import static com.fortegrp.at.common.utils.LogHelper.logInfo
  */
 class BaseUISpec extends GebReportingSpec implements BaseSpec {
 
+    /**
+     * Opens browser, navigates to the base url(Base url is set in a GebConfig.groovy)
+     */
     def startApplication() {
         logInfo("Browser window opening...")
         browser.go(baseUrl)
     }
 
+    /**
+     * Navigates to the login page. Logs in with credentials provided in VM parameters (e.g. -Dusername=username -Dpassword=password)
+     */
     def openMainPage() {
         at LoginPage
         loginAs(System.getProperty('username'), System.getProperty('password'))

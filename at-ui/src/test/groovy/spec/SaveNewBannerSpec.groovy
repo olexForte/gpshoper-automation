@@ -18,6 +18,7 @@ class SaveNewBannerSpec extends BaseUISpec{
      * Proceed to Banners page
      * Click ADD BANNER
      * On Create banner page Click SAVE
+     * Error message should be displayed
      */
     @TestDoc('LoginTest')
     def "Verify that user is not able to save a new banner without filling the required fields."() {

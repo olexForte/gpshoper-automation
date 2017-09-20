@@ -17,10 +17,6 @@ class Environment {
         }
     }
 
-    /**
-     *
-     *
-     */
     static getAppUrl() {
         getTestEnv().baseUrl
     }

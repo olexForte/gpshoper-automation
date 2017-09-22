@@ -14,11 +14,21 @@ class BaseControlCenterPage extends BasePage{
         }
     }
     static content = {
+        loaderSpinner{$(By.xpath("//div[contains(@style,'transform: rotate(1800deg)')]"))}
         userDropDown{$(By.xpath("//div[contains(@class, 'header')]//a[@class='dropdown-toggle']"))}
         logoutOption{$(By.xpath("//div[contains(@class, 'header')]//a[text()='Logout']"))}
         navigationSideBar{$("ul.nav.nav-sidebar")}
         sideBarSection{sectionName -> navigationSideBar.$(By.xpath(".//a[text() = '"+ sectionName +"']"))}
         sideBarItem{itemName -> navigationSideBar.$(By.xpath(".//span[text() = '"+ itemName +"']"))}
+    }
+
+    /**
+     * Wait for loading of page.<br>
+     *     Wait until spinner appears and then wait until spinner disappear
+     */
+    def waitForPageLoadingBasedOnSpinner(){
+       // waitFor{loaderSpinner.displayed}
+       // waitFor{!loaderSpinner.displayed}
     }
 
     /**

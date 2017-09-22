@@ -44,6 +44,7 @@ class Driver {
                     driverInstance.manage().window().maximize()
                     driverInstance
                     break
+                case "firefox":
                 case "ff":
                     String extension = "";
                     if (System.properties['os.name'].toLowerCase().contains('windows')) extension = ".exe"

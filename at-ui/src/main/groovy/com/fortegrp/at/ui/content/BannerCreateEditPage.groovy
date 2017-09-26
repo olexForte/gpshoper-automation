@@ -72,7 +72,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         recepientsEveryone{$("input[name='segment'][value='everyone']")}
         recepientsSpecificUserSegment{$("input[name='segment'][value='userSegment']")}
 
-        //specific segments
+        //specific User segments
         segmentByDescription{description -> $(By.xpath("//div[@class='bannerTable-second-row']//span[text()='" + description + "']/../input"))}
 
         //upload images dialog
@@ -102,6 +102,22 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         // upload image dialog
         uploadImageDialogFile{ $("input[type='file']") }
         //$(org.openqa.selenium.By.xpath("//input[@type='file']/../div"))[0].click();$("input[type='file']")[0].value("test/data/image3.jpeg")
+    }
+
+    def setBannerTitle(title)
+    {
+        waitFor {
+            bannerTitleField.displayed
+            bannerTitleField.value(title)
+        }
+    }
+
+    //todo: finish the function
+    def setStartDate(date)
+    {
+        startDateSelect.click()
+
+        def currentCalendarMonthYear = new Date().parse( "MMM yyyy", 'e.g. September 2017')
     }
 
     /**
@@ -161,6 +177,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      */
     def selectPlatformToggle(toggle)
     {
+        //todo: replace println if possible
         switch (toggle){
             case 'android':
                 if(androidToggle(true).displayed){

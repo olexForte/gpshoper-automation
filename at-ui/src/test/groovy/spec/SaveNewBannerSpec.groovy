@@ -42,4 +42,35 @@ class SaveNewBannerSpec extends BaseUISpec{
         // todo: environment hangs, endless spiner
         false
     }
+
+    //todo: finish the test
+    def "Verify that user is able to save a new banner if all the required fields are populated."() {
+
+        when: "Log in to the environment"
+        openMainPage()
+
+        and: "Proceed to Banners page"
+        expandSideBarSection("MARKETING")
+        selectSideBarMenuItem("Banner")
+        at BannersPage
+
+        and: "Click ADD BANNER"
+        clickAddBannerButton()
+        at BannerCreateEditPage
+
+        and:"Select Platform"
+        selectPlatformToggle(toggle)
+
+        and: "Click SAVE"
+        clickSaveButton()
+
+        then:
+        1==1
+
+        where:
+        toggle    | _
+        'android' | _
+        'ios'     | _
+        'both'    | _
+    }
 }

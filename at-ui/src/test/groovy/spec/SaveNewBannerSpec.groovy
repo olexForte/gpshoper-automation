@@ -17,7 +17,7 @@ class SaveNewBannerSpec extends BaseUISpec{
      * Log in to the environment
      * Proceed to Banners page
      * Click ADD BANNER
-     * On Create banner page Click SAVE
+     * On Create banner page with no fields populated Click SAVE
      * Error message should be displayed
      */
     @TestDoc('AddBannerTest')

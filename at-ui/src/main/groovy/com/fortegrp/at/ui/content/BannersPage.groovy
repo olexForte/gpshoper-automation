@@ -9,6 +9,7 @@ class BannersPage extends BaseControlCenterPage{
     static at = {
         waitFor {
             header.displayed
+            !loaderSpinner.displayed
             js.('document.readyState') == 'complete'
         }
     }

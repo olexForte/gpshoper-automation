@@ -11,6 +11,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
     static at = {
         waitFor {
             phoneSection.displayed
+            !loaderSpinner.displayed
             js.('document.readyState') == 'complete'
         }
        // waitForPageLoadingBasedOnSpinner()
@@ -20,6 +21,12 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         saveButton(wait:true){$("a.saveButton")}
         cancelButton(wait:true){$("a.cancelButton")}
         phoneSection{$("div.case")}
+
+        //Platform Toggles
+        //e.g. search for androidToggle(true) if you toggle is currently selected, androidToggle(false) if not
+        androidToggle(required: false){selected-> if (selected)$("img", 'src': "../../static/img/banner_toggle_android_blue.png") else $("img", 'src': "../../static/img/banner_toggle_android.png")}
+        iOsToggle(required: false){selected-> if (selected)$("img", 'src': "../../static/img/banner_toggle_ios_blue.png") else $("img", 'src': "../../static/img/banner_toggle_ios.png")}
+        bothPlatformsToggle(required: false){selected-> if (selected)$("img", 'src': "../../static/img/banner_toggle_ios_android_blue.png") else $("img", 'src': "../../static/img/banner_toggle_ios_android.png")}
 
         //create banner fields
         platformSelectors{$(By.xpath("//div[count(button) = 3]/button"))}
@@ -148,6 +155,45 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         useNewImageButton.click()
     }
 
+    /**
+     * Selects one of the Platform toggles
+     * @param toggle Accepts either of 'android'/'ios'/'both'
+     */
+    def selectPlatformToggle(toggle)
+    {
+        switch (toggle){
+            case 'android':
+                if(androidToggle(true).displayed){
+                    println(toggle + ' toggle is already selected')
+                    break
+                }else {
+                    androidToggle(false).click()
+                    waitFor {androidToggle(true).displayed}
+                    println(toggle + ' toggle selected')
+                    break
+                }
+            case 'ios':
+                if(iOsToggle(true).displayed){
+                    println(toggle + ' toggle is already selected')
+                    break
+                }else {
+                    iOsToggle(false).click()
+                    waitFor {iOsToggle(true).displayed}
+                    println(toggle + ' toggle is selected')
+                    break
+                }
+            case 'both':
+                if(bothPlatformsToggle(true).displayed){
+                    println(toggle + ' toggle is already selected')
+                    break
+                }else {
+                    bothPlatformsToggle(false).click()
+                    waitFor {bothPlatformsToggle(true).displayed}
+                    println(toggle + ' toggle selected')
+                    break
+                }
+        }
+    }
     /**
      * In Upload Image dialog select option Image Uploaded
      * @return

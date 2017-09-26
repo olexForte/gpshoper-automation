@@ -14,7 +14,7 @@ class BaseControlCenterPage extends BasePage{
         }
     }
     static content = {
-        loaderSpinner{$(By.xpath("//div[contains(@style,'transform: rotate(1800deg)')]"))}
+        loaderSpinner(required: false){$(By.xpath("//div[contains(@style,'transform: rotate(1800deg)')]"))}
         userDropDown{$(By.xpath("//div[contains(@class, 'header')]//a[@class='dropdown-toggle']"))}
         logoutOption{$(By.xpath("//div[contains(@class, 'header')]//a[text()='Logout']"))}
         navigationSideBar{$("ul.nav.nav-sidebar")}

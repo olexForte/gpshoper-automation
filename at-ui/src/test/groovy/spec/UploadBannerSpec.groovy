@@ -49,18 +49,74 @@ class UploadBannerSpec extends BaseUISpec{
         at BannerCreateEditPage
 
         and: "Position select"
-        positionsDropDown("home top 2")
+        positionsDropDown(position)
 
         and: "Click on Upload button"
-
         clickOnUploadButton()
 
+        and: "Click on New Image"
         clickOnNewImageButton()
 
-        uploadFileFromDialog()
+        and: "Set file to upload"
+        uploadFileFromDialog(filename)
+        imageSrcLocator = getCurrentBannerImageSrcLocator()
 
-        then: ""
-        // todo: environment hangs, endless spiner
-        false
+        then: "Check file was uploaded"
+        checkImageSpecified(imageSrcLocator)
+
+        where:
+        position = "home top 2"
+        filename = "image1.jpeg"
+
+    }
+
+    /**
+     1	Select any position from dropdown menu.
+     2	Move your cursor to required size tool tip.
+     3	Click on upload banner icon.
+     4	Click on upload banner text
+     5	Select image upload option.
+     6	Click on Scheduled
+     10	Move cursor on Live/Schedule/Expired upload image page.
+     11	Click on use button
+     */
+
+    @TestDoc('SelectExistingBannerTest')
+    def "Verify that user is able to select existing images"() {
+
+        when: "Log in to the environment"
+        openMainPage()
+
+        and: "Proceed to Banners page"
+        expandSideBarSection("MARKETING")
+        selectSideBarMenuItem("Banner")
+        at BannersPage
+
+        and: "Click ADD BANNER"
+        clickAddBannerButton()
+
+        at BannerCreateEditPage
+
+        and: "Position select"
+        positionsDropDown(position)
+
+        and: "Click on Upload button"
+        clickOnUploadButton()
+
+        and: "Click on New Image"
+        clickOnUseExistingImageButton()
+
+        and: "Set file to upload"
+        selectExistingImageGroup(groupOfImages)
+        selectExistingImage(existingImageLocator)
+
+        then: "Check file was uploaded"
+        checkExpectedImageWasSpecified(existingImageLocator)
+
+        where:
+        position = "home top 2"
+        groupOfImages = "LIVE"
+        existingImageLocator = "e533c490341f9046eb968725f4e28d8c42cb5a8285abdd1208ec2fd37d826ca1" //TODO capture locator
+
     }
 }

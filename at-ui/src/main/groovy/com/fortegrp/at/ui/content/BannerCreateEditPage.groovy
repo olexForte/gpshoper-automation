@@ -102,6 +102,13 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         // upload image dialog
         uploadImageDialogFile{ $("input[type='file']") }
         //$(org.openqa.selenium.By.xpath("//input[@type='file']/../div"))[0].click();$("input[type='file']")[0].value("test/data/image3.jpeg")
+
+        bannerWasCreatedSuccessfullyMessage{$(By.xpath("//h3[text()='Adding Banner Succeeded']"))}
+        bannerCreationErrorMessage{$(By.xpath("//h3[text()='IMAGE UPLOAD ERRORS']"))}
+        // The expected banner size is 1440x750 - the banner you uploaded exceeds the Height!
+
+
+        OKButtonOnMessageDialog{$(By.xpath("//button/div/span[text()='Ok']"))}
     }
 
     def setBannerTitle(title)
@@ -245,6 +252,10 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         Assert.assertTrue("Actual locator (" + actualLocator + ") does not equal to expected '" + srcLocator + "'", actualLocator.equals(expectedLocator))
     }
 
+    /**
+     * Get src locator for currently selected Banner image
+     * @return locator src locator
+     */
     def getCurrentBannerImageSrcLocator(){
         //TODO get SRC attr from Image and return part of it that can be locator
         try {
@@ -255,17 +266,50 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         locator
     }
 
+    /**
+     * Hover mouse over image with src locator
+     * @param locator src locator
+     * @return
+     */
     def hoverMouseOverImageWithSrcLocator(locator){
         $(By.xpath("//img[contains(@src,'" + locator + "')][not(contains(@style,'width: 100%'))]")).click()
        // imageInUseImageDialog(locator).click()
     }
 
+    /**
+     * Select one of existing images group <br>(live, scheduled, expired)
+     * @param group Live, Scheduled or Expired
+     * @return
+     */
     def selectExistingImageGroup(group){
         imagesButtonTypeOnUploadDialog(group).click()
     }
 
+    /**
+     * Select Image from Existing images dialog<br>
+     *     Hover mouse over image and click 'USE'
+     * @param imageLocator image locator
+     * @return
+     */
     def selectExistingImage(imageLocator){
         hoverMouseOverImageWithSrcLocator(imageLocator)
         useImageButton.click()
+    }
+
+    /**
+     * Check that Banner was saved
+     * @return 'true' if banner saved message was displayed
+     */
+    def wasBannerSaved(){
+        waitFor{
+            bannerWasCreatedSuccessfullyMessage.displayed
+        }
+        if (bannerWasCreatedSuccessfullyMessage.displayed){
+            OKButtonOnMessageDialog.click()
+            return true
+        }
+        else {
+            return false
+        }
     }
 }

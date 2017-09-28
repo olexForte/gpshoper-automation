@@ -28,17 +28,24 @@ class ProblemBlockWriter {
                 div('Screenshot:')
                 String filename = ""
                 try {
-                    filename=HtmlReportCreator.getScreenshots(run.getFeature().getParent().getReflection().getName(),
-                            "(" + problem.name.replaceAll("\\[.*\\]","") + ").*" + Environment.reportGlobalSuffix())
-                    a('href': filename) {
-                        builder.mkp.yield(new File(filename).getName())
-                        br()
+                    def featureNameRegexp="(" + problem.name.replaceAll("\\[.*\\]","").replaceAll(":","_").replaceAll("\\.","_")  + ").*" // + Environment.reportGlobalSuffix()
+                    def specName=run.getFeature().getParent().getReflection().getName()
+                    filename=HtmlReportCreator.getScreenshots(specName,featureNameRegexp)
+                    if (filename == null)
+                    {   div('No screenshot are available')
+                        System.out.print("Unable to find screenshots for spec " +
+                                run.getFeature().getParent().getReflection().getName() +
+                                " and feature name regexp:" + featureNameRegexp)
+                    }else {
+                        a('href': filename) {
+                            builder.mkp.yield(new File(filename).getName())
+                            br()
+                        }
                     }
                 } catch (Exception e) {
-                    System.out.print("Unable to attach screenshot " + it + " to the reports:" + e.getMessage())
-
+                    System.out.print("Unable to attach screenshot " + filename + " to the reports:" + e.getMessage())
+                    e.printStackTrace()
                 }
-
             }
         }
     }

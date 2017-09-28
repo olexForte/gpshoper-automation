@@ -107,9 +107,9 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         //$(org.openqa.selenium.By.xpath("//input[@type='file']/../div"))[0].click();$("input[type='file']")[0].value("test/data/image3.jpeg")
 
         bannerWasCreatedSuccessfullyMessage{$(By.xpath("//h3[text()='Adding Banner Succeeded']"))}
-        bannerCreationErrorMessage{$(By.xpath("//h3[text()='IMAGE UPLOAD ERRORS']"))}
+        //bannerCreationErrorMessage{$(By.xpath("//h3[text()='IMAGE UPLOAD ERRORS']"))}
         // The expected banner size is 1440x750 - the banner you uploaded exceeds the Height!
-        bannerSubmissionError{$(By.xpath("//h3[text()='SUBMISSION ERRORS']"))}
+        //bannerSubmissionError(wait:true){$(By.xpath("//h3[text()='SUBMISSION ERRORS']"))}
 
         OKButtonOnMessageDialog{$(By.xpath("//button/div/span[text()='Ok']"))}
 
@@ -119,6 +119,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      * get Banner screen image - workaround for problem with late processing of items
       */
     def getBannerScreenImage(){
+        sleep(1000)
         $("div.screen img:last-child")
     };
 
@@ -131,6 +132,11 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         $(By.xpath("//span[text()='USE']/../../../..//button")).click()
     }
 
+    /**
+     * Set Banner title
+     * @param title
+     * @return
+     */
     def setBannerTitle(title)
     {
         waitFor {
@@ -252,15 +258,15 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      */
     def uploadFileFromDialog(filename){ // TODO
         //$(org.openqa.selenium.By.xpath("//input[@type='file']/../div"))[0].click()
-        //$("input[type='file']")[0].value("test/data/" + filename)
-        $("input[type='file']")[0] = "test/data/" + filename
+        $("input[type='file']").firstElement().sendKeys(System.getProperty("user.dir") + "/src/test/data/${System.properties['testEnv']}/" + filename)
     }
 
     /**
      * Check that Banner has assigned image
+     * @return true if image was loaded
      */
     def checkImageWasSpecified(){
-        assert !getCurrentBannerImageSrcLocator().equals("") : "Existing locator is blank"
+         !getBannerScreenImage().getAttribute("src").contains("placehold.it") // if placeholder still exists - image was not loaded
     }
 
     /**
@@ -390,7 +396,22 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         return  text.toString()
     }
 
+    /**
+     * Get error messages from Submission Error dialog
+     * @return
+     */
     def getErrorMessageFromSubmissionErrorsDialog( ){
-        bannerSubmissionError.$()
+        StringBuffer text = new StringBuffer()
+        $(By.xpath("//h3[text()='SUBMISSION ERRORS']")).parent().$(By.xpath("./div/div/div/div")).each{text.append(it.text())};
+        return  text.toString()
     }
+
+    /**
+     * Get error messages from Image Upload Error dialog
+     * @return
+     */
+    def getErrorMessageFromImageErrorUploadDialog( ){
+        $(By.xpath("//h3[text()='IMAGE UPLOAD ERRORS']")).parent().$(By.xpath("./div/div/div")).text()
+    }
+
 }

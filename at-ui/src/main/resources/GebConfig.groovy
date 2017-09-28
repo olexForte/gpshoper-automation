@@ -10,7 +10,7 @@ envs {
 }
 
 waiting {
-    timeout = 50
+    timeout = 30
     retryInterval = 1
     slow { timeout = 50 }
 }

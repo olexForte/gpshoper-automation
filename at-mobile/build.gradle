@@ -15,7 +15,7 @@ dependencies {
     compile group: 'org.uiautomation', name: 'ios-common', version: '0.6.5'
     compile group: 'org.uiautomation', name: 'ios-client', version: '0.6.5'
 }
-
+/*
 project.drivers.each { driver ->
     task "${driver}_Test"(type: Test) {
         systemProperty "browser", driver
@@ -35,4 +35,4 @@ project.drivers.each { driver ->
 test {
     dependsOn drivers.collect { driver -> tasks["${driver}_Test"] }
     enabled = false
-}
+} */

@@ -16,10 +16,10 @@ waiting {
 }
 
 // Settings
-cacheDriver = false
-cacheDriverPerThread = false
+cacheDriver = true
+cacheDriverPerThread = true
 quitCachedDriverOnShutdown = true
-autoClearCookies = false
+autoClearCookies = true
 atCheckWaiting = true
 //unexpectedPages = [ServerUnavailablePage]
 

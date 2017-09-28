@@ -1,7 +1,12 @@
 package com.fortegrp.at.ui.content
 
+import com.fortegrp.at.ui.utils.SrcLocatorProcessor
+import geb.navigator.Navigator
 import org.junit.Assert
 import org.openqa.selenium.By
+import org.openqa.selenium.Keys
+import org.openqa.selenium.NotFoundException
+import org.openqa.selenium.WebElement
 
 /**
  * Created by Admin on 9/18/2017.
@@ -21,6 +26,9 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         saveButton(wait:true){$("a.saveButton")}
         cancelButton(wait:true){$("a.cancelButton")}
         phoneSection{$("div.case")}
+
+        requiredSizeTooltip{ $(By.xpath("//div[text()='* Required Size']/label/input"))}
+        bannerDetailsButton(wait:true, required:false){ $("button.bannerDetails")}
 
         //Platform Toggles
         //e.g. search for androidToggle(true) if you toggle is currently selected, androidToggle(false) if not
@@ -48,8 +56,6 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         timePickerByItemText{item -> $(By.xpath("//div[contains(@style,'content-box')]//span[text()='" + item + "']"))}
         timePickerOKButton{$(By.xpath("//button/div/span[text()='OK']"))}
         getCurrentTimeFRomTimePicker{}//TODO
-
-        bannerScreenImage(wait:true, required:false){$("div.screen img:last-child")}
 
         positionsDropDownButton(wait:true){$(By.xpath("//div[text() = 'Positions']/following-sibling::div//button"))}
         positionsDropDownItem(wait:true){ item -> $(By.xpath("//div[@data-reactroot]//span//div[text()='" + item + "']"))}
@@ -93,9 +99,6 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         uploadDialogImages{$(By.xpath("//div/h3[text()='Upload Image']/../../div//img"))}
         useImageButton{$(By.xpath("//div/span[text()='USE']"))}
 
-        //drop drop image
-        uploadImageDialog{$(By.xpath("//div/h3[text()='Upload Image']/../../div"))}
-
         // image in Use Image dialog
         imageInUseImageDialog(wait:true){ id -> $(By.xpath("//img[contains(@src,'" + id + "')][not(contains(@style,'width: 100%'))]"))}
 
@@ -106,9 +109,26 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         bannerWasCreatedSuccessfullyMessage{$(By.xpath("//h3[text()='Adding Banner Succeeded']"))}
         bannerCreationErrorMessage{$(By.xpath("//h3[text()='IMAGE UPLOAD ERRORS']"))}
         // The expected banner size is 1440x750 - the banner you uploaded exceeds the Height!
-
+        bannerSubmissionError{$(By.xpath("//h3[text()='SUBMISSION ERRORS']"))}
 
         OKButtonOnMessageDialog{$(By.xpath("//button/div/span[text()='Ok']"))}
+
+    }
+
+    /**
+     * get Banner screen image - workaround for problem with late processing of items
+      */
+    def getBannerScreenImage(){
+        $("div.screen img:last-child")
+    };
+
+    /**
+     * Clicks on Use button (using JS to get focus on element)
+     * @return
+     */
+    def clickUseImageButton(){
+        browser.driver.executeScript("arguments[0].focus()", $(By.xpath("//span[text()='USE']/../../../..//button")).firstElement())
+        $(By.xpath("//span[text()='USE']/../../../..//button")).click()
     }
 
     def setBannerTitle(title)
@@ -155,7 +175,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         positionsDropDownButton.click();
         positionsDropDownItem(item).click();
         waitFor{
-            bannerScreenImage.isDisplayed()
+            getBannerScreenImage().isDisplayed()
         }
     }
 
@@ -240,16 +260,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      * Check that Banner has assigned image
      */
     def checkImageWasSpecified(){
-        Assert.assertFalse("Existing locator is blank", getCurrentBannerImageSrcLocator().equals(""))
-    }
-
-    /**
-     * Check that Banner has expected assigned image
-     * @param srcLocator expected locator
-     */
-    def checkExpectedImageWasSpecified(expectedLocator){
-        actualLocator = getCurrentBannerImageSrcLocator()
-        Assert.assertTrue("Actual locator (" + actualLocator + ") does not equal to expected '" + srcLocator + "'", actualLocator.equals(expectedLocator))
+        assert !getCurrentBannerImageSrcLocator().equals("") : "Existing locator is blank"
     }
 
     /**
@@ -258,8 +269,9 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      */
     def getCurrentBannerImageSrcLocator(){
         //TODO get SRC attr from Image and return part of it that can be locator
+        String locator;
         try {
-            locator = (bannerScreenImage.getAttribute("src") =~ /.*md5\/(.*)\/300\/300/)[0][1]
+            locator = SrcLocatorProcessor.getLocatorFromSrc(getBannerScreenImage().getAttribute("src"))
         } catch (Exception e){
             locator = ""
         }
@@ -272,8 +284,37 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      * @return
      */
     def hoverMouseOverImageWithSrcLocator(locator){
-        $(By.xpath("//img[contains(@src,'" + locator + "')][not(contains(@style,'width: 100%'))]")).click()
-       // imageInUseImageDialog(locator).click()
+
+        clickOnFirstImageInUploadedImagesDialog() //it makes one element Active - @class='hoverImage' instead of @class='hover'
+        //Navigator[] listOfAllImagesOnActiveTabUploadedImagesDialog = $(By.xpath("//div[@class='hoverImage']/../../div//img"))
+
+        Navigator requiredImage = $(By.xpath("//div[@class='hoverImage']/../../div//img[contains(@src,'" + locator + "')]"))
+
+        if (!requiredImage.isDisplayed())
+            throw new NotFoundException("Image with locator [" + locator + "] was not found in current tab")
+
+        requiredImage.click() // activate image
+
+        // move Down to see Use button
+        interact {
+            sendKeys(Keys.ARROW_DOWN)
+        }
+    }
+
+    /**
+     * Activtes first element on a Active tab on Uploaded Image dialog
+     */
+    def clickOnFirstImageInUploadedImagesDialog(){
+
+        waitFor{
+            !loaderSpinner.isDisplayed()
+        }
+        Navigator firstImageOnATab = $(By.xpath("(//div[@class='hover'][not(contains(@style,'width: 100%'))]//img)[1]"))
+
+        interact{
+            moveToElement(firstImageOnATab, 10, 10)
+            click()
+        }
     }
 
     /**
@@ -293,7 +334,11 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      */
     def selectExistingImage(imageLocator){
         hoverMouseOverImageWithSrcLocator(imageLocator)
-        useImageButton.click()
+        clickUseImageButton()
+    }
+
+    def getRandomImageSrcLocatorFromListOfExistingImages(){
+
     }
 
     /**
@@ -311,5 +356,41 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         else {
             return false
         }
+    }
+
+    /**
+     * Returns Required Size tooltip content
+     * @return content of tooltip
+     */
+    def getRequiredSizeTooltipText(){
+        interact{
+            moveToElement(requiredSizeTooltip)
+        }
+        StringBuffer text = new StringBuffer()
+        $("div", text: "Image Size in Server").parent().$("div").each{text.append(it.text())};
+        return  text.toString()
+    }
+
+    /**
+     * Returns Banner Details tooltip content
+     * @return content of tooltip
+     */
+    def getBannerDetailsTooltipText(){
+        // TODO refresh element -  bannerDetailsButton.click()
+        waitFor{
+            $("button.bannerDetails").displayed
+        }
+        interact{
+            sendKeys(Keys.PAGE_DOWN)
+        }
+        sleep(1000)
+        $("button.bannerDetails").click()
+        StringBuffer text = new StringBuffer()
+        $("div", text: "Image Size in Server").parent().$("div").each{text.append(it.text())};
+        return  text.toString()
+    }
+
+    def getErrorMessageFromSubmissionErrorsDialog( ){
+        bannerSubmissionError.$()
     }
 }

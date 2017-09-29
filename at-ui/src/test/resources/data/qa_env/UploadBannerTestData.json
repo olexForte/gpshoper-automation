@@ -1,0 +1,24 @@
+{
+  "position" : "home top 2",
+  "images" : {
+    "live":{
+      "group": "LIVE",
+      "name":"live_banner.jpeg",
+      "locator":"45c9226bb3347fb6e5f0e5b8d0dd5ca741864b191867a79793eb00dc8a5333e0"
+    },
+    "expired":{
+      "group" : "EXPIRED",
+      "name":"expired_banner.jpeg",
+      "locator":"a37c6fb022f893efcc9ef00c59918fb5da638f5304203f733ef77a970f10e105"
+    },
+    "scheduled":{
+      "group":"SCHEDULED",
+      "name":"scheduled_banner.jpeg",
+      "locator":"72351767fc48ebd753fb602b912bcf8ab90fedf3278d4cfb096164fae31e8edd"
+    },
+
+    "image_with_bad_width" : "width_exceed_banner.jpeg",
+    "image_with_bad_hight" : "height_exceed_banner.jpeg"
+  }
+
+}

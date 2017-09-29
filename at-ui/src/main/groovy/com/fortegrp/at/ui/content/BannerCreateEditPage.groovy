@@ -115,6 +115,8 @@ class BannerCreateEditPage extends BaseControlCenterPage{
 
     }
 
+    String placeholderImageSrc = "placehold.it";
+
     /**
      * get Banner screen image - workaround for problem with late processing of items
       */
@@ -169,6 +171,12 @@ class BannerCreateEditPage extends BaseControlCenterPage{
     def clickCancelButton()
     {
         cancelButton.click()
+    }
+/**
+ * Click on Cancel button in Upload File Dialog
+ */
+    def clickCancelDialogButton(){
+        cancelDialogButton.click()
     }
 
     /**
@@ -256,9 +264,11 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      * Upload file from Dialog
      * @return
      */
-    def uploadFileFromDialog(filename){ // TODO
-        //$(org.openqa.selenium.By.xpath("//input[@type='file']/../div"))[0].click()
-        $("input[type='file']").firstElement().sendKeys(System.getProperty("user.dir") + "/src/test/data/${System.properties['testEnv']}/" + filename)
+    def uploadFileFromDialog(filename){
+        // JS to prevent UPLOAD FILE dialog from opening
+        browser.driver.executeScript("HTMLInputElement.prototype.click = function() { if(this.type !== 'file') HTMLElement.prototype.click.call(this);};")
+
+        $("input[type='file']").firstElement().sendKeys(filename)
     }
 
     /**
@@ -266,7 +276,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
      * @return true if image was loaded
      */
     def checkImageWasSpecified(){
-         !getBannerScreenImage().getAttribute("src").contains("placehold.it") // if placeholder still exists - image was not loaded
+         !getBannerScreenImage().getAttribute("src").contains(placeholderImageSrc) // if placeholder still exists - image was not loaded
     }
 
     /**
@@ -287,7 +297,7 @@ class BannerCreateEditPage extends BaseControlCenterPage{
     /**
      * Hover mouse over image with src locator
      * @param locator src locator
-     * @return
+     * @return true if element is visible
      */
     def hoverMouseOverImageWithSrcLocator(locator){
 
@@ -305,6 +315,8 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         interact {
             sendKeys(Keys.ARROW_DOWN)
         }
+
+        requiredImage.isDisplayed()
     }
 
     /**
@@ -343,8 +355,13 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         clickUseImageButton()
     }
 
-    def getRandomImageSrcLocatorFromListOfExistingImages(){
-
+    /**
+     * Check that image is available on current tab of Upload image Dialog
+     * @param imageLocator image locator
+     * @return
+     */
+    def checkExistingImageAvailable(imageLocator){
+        hoverMouseOverImageWithSrcLocator(imageLocator)
     }
 
     /**
@@ -414,4 +431,12 @@ class BannerCreateEditPage extends BaseControlCenterPage{
         $(By.xpath("//h3[text()='IMAGE UPLOAD ERRORS']")).parent().$(By.xpath("./div/div/div")).text()
     }
 
+    /**
+     * Check that dialog exist
+     * @param header header of dialog
+     */
+    def checkDialogHeaderExists(header){
+        sleep(1000)
+        $(By.xpath("//h3[text()='${header}']")).isDisplayed()
+    }
 }

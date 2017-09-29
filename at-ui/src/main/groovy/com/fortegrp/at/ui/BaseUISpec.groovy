@@ -5,6 +5,7 @@ import com.fortegrp.at.common.env.Environment
 import com.fortegrp.at.ui.content.BaseControlCenterPage
 import com.fortegrp.at.ui.content.DashboardPage
 import com.fortegrp.at.ui.content.LoginPage
+import com.fortegrp.at.ui.utils.TestProperties
 import geb.spock.GebReportingSpec
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.Keys

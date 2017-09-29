@@ -2,6 +2,7 @@ package com.fortegrp.at.common.utils
 
 import groovy.time.TimeCategory
 
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -49,5 +50,15 @@ class DateUtils {
             cal.add(Calendar.DAY_OF_WEEK, -1)
         }
         cal.time
+    }
+
+    static Date getDateFromString (String string){
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        (Date)formatter.parse(string);
+    }
+
+    static String dateToString (Date date){
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        formatter.format(date);
     }
 }

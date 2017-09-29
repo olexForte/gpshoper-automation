@@ -1,0 +1,18 @@
+{
+  "title":"AUTOMATION BANNER EDIT TEST 1",
+  "platform" : "IPHONE",
+  "position" : "home top 2",
+  "image" : {
+      "group": "LIVE",
+      "name":"edit_banner1.jpg",
+      "locator":"a41f5150d30caf959ea0f632c93d38d54c905155fd0a14793ba6601670cda8b3"
+  },
+  "startDate": "11/02/2017",
+  "startTime": "12:00",
+  "endDate": "11/02/2020",
+  "endTime": "12:00",
+  "actionType": "Section",
+  "actionValue": "Cart",
+  "recipients": "EVERYONE"
+
+}

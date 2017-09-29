@@ -1,0 +1,19 @@
+{
+  "title":"AUTOMATION BANNER EDIT TEST 2",
+  "platform" : "ANDROID",
+  "position" : "home top",
+  "image" : {
+      "group": "LIVE",
+      "name":"edit_banner2.jpg",
+      "locator":"77c945faeadabb7186d789b1fc3a8a1a4444dfdcb20653f94ce62b41a3a1b8c0"
+  },
+  "startDate": "10/01/2017",
+  "startTime": "11:00",
+  "endDate": "10/01/2020",
+  "endTime": "11:00",
+  "actionType": "Product",
+  "actionValue": "Product1",
+  "recipients": "SPECIFIC_USER_SEGMENT",
+  "segments" : [ "Device profile id is even"]
+
+}
